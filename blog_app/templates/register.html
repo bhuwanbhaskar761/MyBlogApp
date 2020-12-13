@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+      <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <title>My Blog App</title>
+  </head>
+  <style>
+      input{
+      width:100%;
+      }
+
+      *{
+	padding: 0;
+	margin: 0;
+}
+
+html, body{
+	font-size: 22px;
+	width: 100%;
+	height: 100%;
+}
+
+#success, #fail{
+	display: none;
+
+}
+
+#message, #success, #fail{
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.container{
+	position: absolute;
+	left:20%;
+}
+
+p{
+	display: inline;
+	margin-right: 5px;
+}
+
+input, button{
+	font-family: 'Open Sans';
+	font-weight: bold;
+	font-size: 20px;
+}
+
+input{
+	border: 1px solid grey;
+	width: 100%;
+	height: 25px;
+}
+
+input #ans{
+	border: 1px solid #FFBBD7;
+	width: 30px;
+	height: 20px;
+	text-align: center;
+}
+
+button{
+	border: none;
+    border-radius: 1.5em;
+    color: #FFF;
+    background: #FFBBD7;
+    padding: 2.5px 10px;
+    width: 105px;
+    height: 30px;
+    cursor: pointer;
+    transition: background .5s ease-in-out;
+}
+
+button:hover:enabled{
+	background: #303030;
+}
+
+button:disabled{
+	opacity: .5;
+	cursor: default;
+}
+  </style>
+<body>
+<div class="container" style="width:60%">
+
+<h1 align="center">Signup Page</h1><br>
+{% for i in messages %}
+<p>{{i}}</p>
+{% endfor %}
+<hr>
+<br><br>
+    <form action="" method="post" novalidate>
+        {% csrf_token %}
+        {% for i in form %}
+
+<div class="mb-3">
+  <label for="exampleFormControlInput1" class="form-label">{{i.label_tag}}</label><br>
+  {{i}} <br>{{i.errors}}<br>
+
+</div>
+        {% endfor %}
+        <p id="question"></p><input id="ans" type="text" style="border: 1px solid #FFBBD7;width: 30px;height: 20px;text-align: center;">
+			<div id="message">Please verify.</div>
+			<div id="success">Validation complete :)</div>
+			<div id="fail">Validation failed :(</div>
+			<button type="submit" value="submit">Submit</button>
+			<button type="reset" value="reset">Reset</button>
+        <br><br>
+        <h6><a href="{% url 'login' %}">Already Register click here for login</a> </h6>
+    </form>
+</div>
+
+
+<script>
+var total;
+
+function getRandom(){return Math.ceil(Math.random()* 20);}
+function createSum(){
+		var randomNum1 = getRandom(),
+			randomNum2 = getRandom();
+	total =randomNum1 + randomNum2;
+  $( "#question" ).text( randomNum1 + " + " + randomNum2 + "=" );
+  $("#ans").val('');
+  checkInput();
+}
+
+function checkInput(){
+		var input = $("#ans").val(),
+    	slideSpeed = 200,
+      hasInput = !!input,
+      valid = hasInput && input == total;
+    $('#message').toggle(!hasInput);
+    $('button[type=submit]').prop('disabled', !valid);
+    $('#success').toggle(valid);
+    $('#fail').toggle(hasInput && !valid);
+}
+
+$(document).ready(function(){
+	//create initial sum
+	createSum();
+	// On "reset button" click, generate new random sum
+	$('button[type=reset]').click(createSum);
+	// On user input, check value
+	$( "#ans" ).keyup(checkInput);
+});
+</script>
+
+  </body>
+
+</html>

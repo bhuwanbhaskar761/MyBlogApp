@@ -1,0 +1,35 @@
+{% extends 'blog_page.html' %}
+{% block b %}
+<div class="container">
+<h3>{{user.username}} Post</h3> (only public post)<hr/>
+
+    <div class="row">
+      {% if post %}
+{% for i in post %}
+
+        <!-- Card -->
+<div class="col-12" style="margin-bottom:2%">
+<div class="card promoting-card">
+
+  <!-- Card content -->
+
+      <!-- Title -->
+      <h5 class="card-title font-weight-bold mb-2">{{i.title}}</h5>
+
+</div>
+
+<div class="card">
+  <img src="{{i.image.url}}" class="card-img-top" alt="..." style="height:400px">
+  <div class="card-body">
+    <p class="card-text">{{i.description}}</p>
+  </div>
+</div>
+</div>
+{% endfor %}
+      {% else %}
+      <p>{{user.username}} have no any public or private post.</p>
+      {% endif %}
+</div>
+</div>
+
+{% endblock %}
